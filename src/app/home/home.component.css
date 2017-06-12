@@ -1,0 +1,73 @@
+/*/deep/*/
+/*.ui-corner-bottom {*/
+    /*min-height: 200px !important;*/
+/*}*/
+
+/*/deep/*/
+/*.ui-fileupload-choose.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left {*/
+    /*background-color: red;*/
+/*}*/
+
+
+
+.content {
+    position: relative;
+}
+
+/*.post-type1 {*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*-webkit-transform: skew(20deg) translate(-190px, -300px) rotate(19deg);*/
+    /*-moz-transform: skew(20deg) translate(-190px, -300px) rotate(19deg);*/
+    /*-o-transform: skew(20deg) translate(-190px, -300px) rotate(19deg);*/
+    /*background: #D3D3D3;*/
+    /*width: 600px;*/
+    /*height: 600px;*/
+
+/*}*/
+
+/*.post-type1::before {*/
+    /*content: ' ';*/
+    /*background-color: transparent;*/
+    /*width: 100px;*/
+    /*height: 100px;*/
+    /*position: absolute;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*border-top: 100px solid white;*/
+    /*border-right: 100px solid transparent;*/
+/*}*/
+
+/*.post-type1::after {*/
+    /*content: ' ';*/
+    /*background-color: transparent;*/
+    /*width: 100px;*/
+    /*height: 100px;*/
+    /*position: absolute;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
+    /*border-top: 100px solid transparent;*/
+    /*border-right: 100px solid white;*/
+/*}*/
+
+.polygon {
+    width: 800px;
+    margin: auto;
+}
+
+
+
+.d3-chart {
+    width: 100%;
+    height: 400px;
+}
+
+.d3-chart .axis path,
+.d3-chart .axis line {
+    stroke: #999;
+}
+
+.d3-chart .axis text {
+    fill: #999;
+}

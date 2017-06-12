@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row">
+    <button class="btn btn-primary add-img" (click)="addImage()" [disabled]="!canAdd">新增圖片欄位(最多10格)</button>
+    <div class="clearfix upload-field" #uploadField>
+      <div class="img-upload" *ngFor="let item of items; let i = index" [ngStyle]="{'width': item.width}" [ngClass]="{'blue': item.drop}" (dragover)="item.drop = true" (dragenter)="item.drop = true" (dragleave)="item.drop = false">
+        <img src="assets/images/close.png" alt="" class="close-icon" (click)="closeItem(item)">
+        <p [ngStyle]="{'display': item.font}">點擊或拖曳選取</p>
+        <input class="file-to-upload" type="file" name="fileToUpload" (change)="previewFile($event, item, i)"
+               id="file-to-upload{{i}}" accept="image/*">
+        <img src="{{item.src}}" height="200" alt="Image preview..." id="preview{{i}}">
+      </div>
+    </div>
+
+  </div>
+</div>
