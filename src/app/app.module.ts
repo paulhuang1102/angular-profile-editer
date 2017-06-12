@@ -8,6 +8,8 @@ import { SavePageService } from "./services/save-page.service";
 import { HttpModule } from "@angular/http";
 import { EditorComponent } from './editor/editor.component';
 import { AuthService } from "./services/auth.service";
+import { UserService } from "./services/user.service";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
     declarations: [
@@ -18,9 +20,10 @@ import { AuthService } from "./services/auth.service";
     imports: [
         BrowserModule.withServerTransition({ appId: 'editor' }),
         routing,
-        HttpModule
+        HttpModule,
+        FormsModule
     ],
-    providers: [SavePageService, AuthService],
+    providers: [SavePageService, AuthService, UserService],
     bootstrap: [AppComponent]
 })
 export class AppModule {
