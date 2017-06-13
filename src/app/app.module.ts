@@ -10,12 +10,20 @@ import { EditorComponent } from './editor/editor.component';
 import { AuthService } from "./services/auth.service";
 import { UserService } from "./services/user.service";
 import { FormsModule } from "@angular/forms";
+import { AlertComponent } from './alert/alert.component';
+import { RegisterComponent } from './register/register.component';
+import { AlertService } from "./services/alert.service";
+import { RedirectComponent } from './redirect/redirect.component';
+import { AuthGuard } from "./guard/auth.guard";
 
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
-        EditorComponent
+        EditorComponent,
+        AlertComponent,
+        RegisterComponent,
+        RedirectComponent
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'editor' }),
@@ -23,7 +31,7 @@ import { FormsModule } from "@angular/forms";
         HttpModule,
         FormsModule
     ],
-    providers: [SavePageService, AuthService, UserService],
+    providers: [SavePageService, AuthService, UserService, AlertService, AuthGuard],
     bootstrap: [AppComponent]
 })
 export class AppModule {

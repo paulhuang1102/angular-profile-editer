@@ -2,18 +2,35 @@
     <div class="row">
 
         <!--<div class="d3-chart" #chart></div>-->
-
         <div class="content">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="alert alert-info">
-                    Username: test<br/>
-                    Password: test
-                </div>
+            <div class="control" #control>
+                <p *ngIf="currentUser">Hi {{ currentUser.name }}</p>
                 <h2>Login</h2>
+                <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+                    <div class="form-group" >
+                        <label for="email">Your E-Mail</label>
+                        <input type="email" name="email" class="form-control" [(ngModel)]="model.email" #email="ngModel"
+                               required email>
+                        <div class="help-block" *ngIf="f.submitted && !email.valid">>E-Mail is required</div>
+                    </div>
+                    <div class="form-group" >
+                        <label for="password">Your Password</label>
+                        <input type="password" name="password" class="form-control" [(ngModel)]="model.password"
+                               #password="ngModel" required>
+                        <div class="help-block" *ngIf="f.submitted && !password.valid">>Password is required</div>
+                    </div>
+                    <img *ngIf="loading"
+                         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
 
-                <p><a [routerLink]="['/logout']">Logout</a></p>
-                <div class="polygon" #polygon></div>
+                    <button type="submit">SignIn</button>
+                </form>
+
+                <a [routerLink]="['/register']">Register</a>
+                <p><a (click)="logout()">Logout</a></p>
+
             </div>
+
+            <div class="polygon" #polygon></div>
         </div>
     </div>
 </div>

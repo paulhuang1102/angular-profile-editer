@@ -4,12 +4,16 @@ const url = require('url');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const expressJwt = require('express-jwt');
+const config = require('./config.json');
+
 
 const app = express();
 
 app.set('port', (process.env.PORT || 3000));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 
 app.use(function (req, res, next) { //allow cross origin requests
     const allowedOrigins = ["http://localhost:4200", "http://localhost:4000"];
@@ -24,13 +28,13 @@ app.use(function (req, res, next) { //allow cross origin requests
 });
 
 
+app.use(expressJwt({ secret: config.secret }).unless({ path: ['/users/login', '/users/register'] }));
+app.use('/users', require('./controllers/users.controller'));
+
 app.listen(app.get('port'), function () {
     console.log('Angular 4 Full Stack listening on port ' + app.get('port'));
 });
 
-app.get('/', function (req, res) {
-    console.log('it\'s worked!');
-});
 
 var storage = multer.diskStorage({ //multers disk storage settings
     destination: function (req, file, cb) {
@@ -67,8 +71,6 @@ app.post('/save', function (req, res) {
     console.log('save');
     res.json({ 'file': req.body });
 });
-
-
 
 
 module.exports = app;

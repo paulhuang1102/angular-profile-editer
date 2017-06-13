@@ -7,16 +7,25 @@ import { User } from "../models/user.model";
 
 @Injectable()
 export class UserService {
-    private serverUrl = 'localhost:3000';
+    private serverUrl = 'http://localhost:3000';
+
     constructor(private http: Http, private authService: AuthService) {
     }
 
-    getUser(): Observable<User> {
+    private jwt() {
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser && currentUser.token) {
+            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
+            return new RequestOptions({ headers: headers })
+        }
+    }
 
-        let headers = new Headers({ 'Authorization': 'Bearer ' + this.authService.token });
-        let options = new RequestOptions({ headers: headers });
-        return this.http.get(this.serverUrl + '/user', options)
-            .map((response: Response) => response.json());
+    getUser(userId) {
+        return this.http.get(this.serverUrl + '/users/' + userId, this.jwt()).map((response: Response) => response.json());
+    }
+
+    createUser(user: User) {
+        return this.http.post(this.serverUrl + '/users/signup', user, this.jwt())
     }
 
 }

@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer2, ViewEncapsulation 
 import * as d3 from 'd3';
 import { UserService } from "../services/user.service";
 import { User } from "../models/user.model";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../services/auth.service";
+import { AlertService } from "../services/alert.service";
 
 @Component({
     selector: 'app-home',
@@ -11,19 +12,17 @@ import { AuthService } from "../services/auth.service";
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-    user: User;
     model: any = {};
     loading = false;
     error = '';
+    currentUser;
 
-    constructor(private renderer: Renderer2, private userService: UserService, private router: Router, private authService:AuthService) {
-
+    constructor(private renderer: Renderer2, private userService: UserService, private router: Router,
+                private authService: AuthService, private alertService: AlertService, private route: ActivatedRoute) {
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
 
     ngOnInit() {
-        // this.userService.getUser().subscribe(user => {
-        //     this.user = user;
-        // });
 
         this.createPolygon();
     }
@@ -58,8 +57,7 @@ export class HomeComponent implements OnInit {
 
 
         function repeat() {
-            polygon_line.transition()
-                .duration(2500)
+            polygon_line
                 .attr('points', shape1)
                 .transition()
                 .duration(2500)
@@ -78,18 +76,26 @@ export class HomeComponent implements OnInit {
 
     login() {
         this.loading = true;
-        this.authService.login(this.model.username, this.model.password)
-            .subscribe(result => {
-                if (result === true) {
-                    // login successful
-                    this.router.navigate(['/']);
-                } else {
-                    // login failed
-                    this.error = 'Username or password is incorrect';
+        this.authService.login(this.model.email, this.model.password)
+            .subscribe(
+                data => {
+                    this.router.navigate(['redirect']);
+                    this.loading = false;
+                },
+                error => {
+                    this.alertService.error(error._body);
                     this.loading = false;
                 }
-            });
+            );
     }
+
+    logout() {
+        this.authService.logout();
+        this.router.navigate(['redirect']);
+    }
+
+    @ViewChild('control') control: ElementRef;
+
 
 
 }

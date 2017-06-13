@@ -4,21 +4,17 @@ import { Observable } from "rxjs";
 
 @Injectable()
 export class AuthService {
-    public token: string;
-    private serverUrl = 'localhost:3000';
+    private serverUrl = 'http://localhost:3000';
 
     constructor(private http: Http) {
-        let user = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = user && user.token;
     }
 
-    login(account: string, password: string): Observable<boolean> {
-        return this.http.post(this.serverUrl + '/login', JSON.stringify({ account: account, password: password }))
-            .map((respose: Response) => {
-                let token = respose.json() && respose.json().token;
-                if (token) {
-                    this.token = token;
-                    localStorage.setItem('currentUser', JSON.stringify({ user: account, token: this.token }));
+    login(email: string, password: string): Observable<boolean> {
+        return this.http.post(this.serverUrl + '/users/login', { email: email, password: password })
+            .map((response: Response) => {
+                let user = response.json();
+                if (user && user.token) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
                     return true;
                 } else {
                     return false;
@@ -27,7 +23,6 @@ export class AuthService {
     }
 
     logout(): void {
-        this.token = null;
         localStorage.removeItem('currentUser');
     }
 }
