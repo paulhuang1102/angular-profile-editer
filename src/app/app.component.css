@@ -1,0 +1,35 @@
+.header {
+    margin-bottom: 30px;
+    position: relative;
+    height: 133px;
+    border: solid #DCDCDC 3px;
+}
+
+.header h1 {
+    font-size: 40px;
+    position: absolute;
+    left: 10%;
+    transition: .5s;
+}
+
+.header h1:hover {
+    transition: .5s;
+    font-size: 45px;
+    color: #33CCFF;
+}
+
+.header-bg {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.sites {
+    fill: #F8F8FF;
+}
+
+.sites:first-child {
+    fill: #F8F8FF;
+}

@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 import { UserService } from "../services/user.service";
-import { User } from "../models/user.model";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 import { AlertService } from "../services/alert.service";
@@ -23,7 +22,6 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-
         this.createPolygon();
     }
 
@@ -69,9 +67,7 @@ export class HomeComponent implements OnInit {
                 .duration(2500)
                 .attr('points', shape4)
                 .on("end", repeat);
-
         }
-
     }
 
     login() {
@@ -79,7 +75,7 @@ export class HomeComponent implements OnInit {
         this.authService.login(this.model.email, this.model.password)
             .subscribe(
                 data => {
-                    this.router.navigate(['redirect']);
+                    this.router.navigate(['profile/:id'], JSON.parse(localStorage.getItem('currentUser')).id);
                     this.loading = false;
                 },
                 error => {

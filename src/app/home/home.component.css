@@ -9,7 +9,6 @@
 /*}*/
 
 
-
 .content {
     position: relative;
 }
@@ -23,9 +22,22 @@
     text-align: center;
 }
 
+.control h2 {
+    margin-bottom: 10px;
+    font-size: 34px;
+}
+
+.control label {
+    margin-bottom: 8px;
+}
+
 .control form{
     width: 200px;
     margin: auto;
+}
+
+.register-btn {
+    margin-top: 10px;
 }
 
 /*.post-type1 {*/

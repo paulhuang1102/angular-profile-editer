@@ -7,12 +7,18 @@ import { SavePageService } from "../services/save-page.service";
   styleUrls: ['./editor.component.css']
 })
 export class EditorComponent implements OnInit {
+
   @ViewChild('uploadField') uploadField: ElementRef;
+
+  currentUser: any = {};
   items = [];
   itemId = 0;
   canAdd = true;
 
-  constructor(private savePageService: SavePageService) { }
+  constructor(private savePageService: SavePageService) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+  }
 
   ngOnInit() {
   }

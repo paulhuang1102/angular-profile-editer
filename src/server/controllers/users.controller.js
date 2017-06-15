@@ -32,13 +32,18 @@ router.post('/signup', function (req, res) {
             user.name = formData.name;
             user.save(function (err, result) {
                 if (err) deferred.reject(err.name + ': ' + err.message);
-                deferred.resolve();
+                deferred.resolve({
+                    id: result._id,
+                    email: result.email,
+                    name: result.name,
+                    token: jwt.sign({ sub: result._id }, config.secret)
+                });
             })
         }
     });
 
-    deferred.promise.then(function () {
-        res.sendStatus(200);
+    deferred.promise.then(function (user) {
+        res.json(user);
     }).catch(function (err) {
         res.status(400).send(err);
     });
@@ -48,7 +53,7 @@ router.post('/login', function (req, res) {
     var deferred = Q.defer();
     var formData = req.body;
     User.findOne({ email: formData.email }, function (err, user) {
-        if (err) deferred.reject(err.name + ':' + err.message);
+        if (err) deferred.reject(err.name + ': ' + err.message);
         if (user && bcrypt.compareSync(formData.password, user.password)) {
             deferred.resolve({
                 id: user._id,
@@ -66,6 +71,34 @@ router.post('/login', function (req, res) {
             res.json(user);
         } else {
             res.status(401).send('Username or password is incorrect');
+        }
+    }).catch(function (err) {
+        res.status(400).send(err);
+    })
+});
+
+router.get('/profile/:id', function (req, res) {
+    var deferred = Q.defer();
+    var userId = req.params.id;
+    User.findById(userId, function (err, user) {
+        if (err) deferred.reject(err.name + ': ' + err.message);
+        if (user) {
+            deferred.resolve({
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                post: user.post
+            });
+        } else {
+            deferred.resolve();
+        }
+    });
+
+    deferred.promise.then(function (user) {
+        if (user) {
+            res.json(user);
+        } else {
+            res.sendStatus(404);
         }
     }).catch(function (err) {
         res.status(400).send(err);

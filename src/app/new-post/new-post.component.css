@@ -1,0 +1,84 @@
+.post-name, .post-name-edit {
+    height: 50px;
+    border: solid #DCDCDC 1px;
+    transition: .5s;
+
+}
+
+.post-name:hover {
+    border: dashed #00DDDD 5px;
+    transition: .3s;
+}
+
+
+.post-name p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.post-name-edit input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding-left: 8px;
+}
+
+
+.post-info {
+    height: 200px;
+    border: solid #DCDCDC 1px;
+    text-align: center;
+    transition: .5s;
+}
+
+.post-info:hover {
+    border: dashed #00DDDD 5px;
+    transition: .3s;
+}
+
+
+.post-info p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+
+.img-upload {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: skyBlue;
+    margin-right: 20px;
+    margin-top: 20px;
+    float: left;
+}
+
+
+.img-upload [type=file] {
+    cursor: pointer;
+    display: block;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    width: 100%;
+    height: 200px;
+}
+
+.close-icon {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 50;
+}
+
+.blue {
+    background-color: blue;
+}

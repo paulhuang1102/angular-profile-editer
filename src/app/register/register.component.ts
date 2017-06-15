@@ -22,12 +22,12 @@ export class RegisterComponent implements OnInit {
     this.userService.createUser(this.model)
         .subscribe(
             data => {
-                console.log(data);
               this.alertService.success('Registration successful', true);
-              this.router.navigate(['/home']);
+              let user = JSON.parse(data['_body']);
+              localStorage.setItem('currentUser', data['_body']);
+              this.router.navigate(['profile/:id'], user.id);
             },
             error => {
-              console.log(error)
               this.alertService.error(error._body);
               this.loading = false;
             }

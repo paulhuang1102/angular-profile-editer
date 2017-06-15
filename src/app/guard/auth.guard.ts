@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 @Injectable()
 
 export class AuthGuard implements CanActivate {
@@ -7,12 +7,12 @@ export class AuthGuard implements CanActivate {
 
     }
 
-    canActivate() {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (localStorage.getItem('currentUser')) {
             return true;
         }
 
-        this.router.navigate(['/home']);
+        this.router.navigate(['/home'], { queryParams: { returnUrl: state.url }});
         return false;
     }
 }

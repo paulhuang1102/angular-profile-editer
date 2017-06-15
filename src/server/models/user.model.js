@@ -8,7 +8,8 @@ var schema = Schema({
         }
     },
     password: { type: String, required: true, min: 5 },
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    post: [{ type: Schema.Types.ObjectId, ref: 'Post' }]
 });
 
 module.exports = mongoose.model('User', schema);

@@ -15,6 +15,8 @@ import { RegisterComponent } from './register/register.component';
 import { AlertService } from "./services/alert.service";
 import { RedirectComponent } from './redirect/redirect.component';
 import { AuthGuard } from "./guard/auth.guard";
+import { ProfileComponent } from './profile/profile.component';
+import { NewPostComponent } from './new-post/new-post.component';
 
 @NgModule({
     declarations: [
@@ -23,7 +25,9 @@ import { AuthGuard } from "./guard/auth.guard";
         EditorComponent,
         AlertComponent,
         RegisterComponent,
-        RedirectComponent
+        RedirectComponent,
+        ProfileComponent,
+        NewPostComponent
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'editor' }),

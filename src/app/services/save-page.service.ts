@@ -11,16 +11,39 @@ export class SavePageService {
     constructor(private http: Http) {
     }
 
-    uploadAll(formData): Observable<any> {
+    uploadAll(data): Observable<any> {
+        return this.http.post(this.serverUrl + '/editor/save', data, this.jwt());
+    }
+
+    private jwt() {
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser && currentUser.token) {
+            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
+            return new RequestOptions({ headers: headers })
+        }
+    }
+
+    uploadImage(formData, data): Observable<any> {
         let xhr = new XMLHttpRequest();
         let progress = 0;
         xhr.upload.onprogress = (event) => {
             progress = Math.round(event.loaded / event.total * 100);
-            console.log(progress)
         };
-
-        xhr.open('POST', this.serverUrl + '/upload', true);
+        xhr.open('POST', this.serverUrl + '/editor/upload', true);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token);
         xhr.send(formData);
-        return this.http.post(this.serverUrl + '/save', this.options);
+        return this.uploadAll(data);
+    }
+
+    postData(formData, data, folderName): Observable<any> {
+        this.http.post(this.serverUrl + '/editor/folder', { postName: folderName }, this.jwt()).subscribe(
+            res => {
+                return this.uploadImage(formData, data);
+            },
+            error => {
+                return;
+            }
+        );
+        return this.uploadImage(formData, data);
     }
 }
