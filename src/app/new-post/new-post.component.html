@@ -1,23 +1,22 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4 clearfix">
-            <div class="post-name" (click)="onEditName()" *ngIf="!editName">
-                <p>
-                    Click to Edit Post Name
-                </p>
+            <div class="post-name" *ngIf="!editName">
+                <p>{{postModel.postName}}</p>
             </div>
             <div class="post-name-edit" *ngIf="editName" #editName>
-                <input type="text">
+                <input type="text" (change)="getName($event)">
             </div>
         </div>
         <div class="col-md-8">
-            <div class="post-info">
-                <p>
-                    Click to Edit Post Info
-                </p>
-
+            <div class="post-info" *ngIf="!editInfo">
+                <textarea>{{postModel.postInfo}}</textarea>
+            </div>
+            <div class="post-info-edit" *ngIf="editInfo" #editInfo>
+                <textarea (change)="getInfo($event)"></textarea>
             </div>
         </div>
+
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -33,9 +32,8 @@
                            id="file-to-upload{{i}}" accept="image/*">
                     <img src="{{item.src}}" height="200" alt="Image preview..." id="preview{{i}}">
                 </div>
-                <button (click)="uploadAll()">Save This Post</button>
+                <button type="submit" (click)="uploadAll($event)">Save This Post</button>
             </div>
         </div>
     </div>
-    <button (click)="editName = false">{{ editName}}</button>
 </div>

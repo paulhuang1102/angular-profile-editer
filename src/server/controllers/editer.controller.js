@@ -16,7 +16,7 @@ router.post('/upload', function (req, res) {
             console.log(err);
             return;
         }
-        res.json({ error_code: 0, err_desc: null });
+        res.send('done');
         folderName = '';
         userId = '';
     });
@@ -24,11 +24,14 @@ router.post('/upload', function (req, res) {
 });
 
 router.post('/save', function (req, res) {
-    res.send('perfect');
+    var postName = req.body.postName;
+    var postInfo = req.body.postInfo;
+    console.log(postName, postInfo);
 });
 
 router.post('/folder', function (req, res) {
    folderName = req.body.postName
+    res.sendStatus(200);
 });
 
 

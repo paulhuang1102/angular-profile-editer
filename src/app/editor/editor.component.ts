@@ -108,14 +108,14 @@ export class EditorComponent implements OnInit {
       // xhr.open('POST', 'http://localhost:3000/upload', true);
       // xhr.send(formData);
 
-      this.savePageService.uploadAll(formData).subscribe(
-          res => {
-            console.log(res);
-          },
-          error => {
-            console.log(error);
-          }
-      )
+      // this.savePageService.uploadAll(formData).subscribe(
+      //     res => {
+      //       console.log(res);
+      //     },
+      //     error => {
+      //       console.log(error);
+      //     }
+      // )
     }
 
   }

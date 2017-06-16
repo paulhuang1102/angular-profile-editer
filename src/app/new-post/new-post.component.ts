@@ -1,19 +1,22 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { SavePageService } from "../services/save-page.service";
+import { Observable } from "rxjs";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-new-post',
     templateUrl: './new-post.component.html',
     styleUrls: ['./new-post.component.css'],
     host: {
-        '(document:click)': 'handleClick($event)',
+        '(document:click)': 'click($event)',
     },
 })
 export class NewPostComponent implements OnInit {
 
     @ViewChild('uploadField') uploadField: ElementRef;
     @ViewChild('editName') editNameEl: ElementRef;
-    private targetUrl = 'http://localhost:3000';
+    @ViewChild('editInfo') editInfoEl: ElementRef;
+
     currentUser: any = {};
     items = [];
     itemId = 0;
@@ -21,10 +24,20 @@ export class NewPostComponent implements OnInit {
     uploading = false;
     editName = false;
     editInfo = false;
+    private saved = true;
+
+    postName = 'Click to Edit Post Name';
+    postInfo = 'Click to Edit Post Info';
+
+    private postModel = {
+        postName: this.postName,
+        postInfo: this.postInfo
+    };
 
 
-    constructor(private savePageService: SavePageService) {
+    constructor(private savePageService: SavePageService, private router: Router) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
 
     }
 
@@ -32,21 +45,131 @@ export class NewPostComponent implements OnInit {
 
     }
 
-
-    onEditName() {
-        this.editName = true;
-        //     let read = setInterval(() => {
-        //         if (this.editNameEl.nativeElement) {
-        //             this.editNameEl.nativeElement.childNodes[1].focus();
-        //             clearInterval(read);
-        //         }
-        //     }, 500);
+    @HostListener('window:beforeunload', ['$event'])
+    beforeUnloadHander(event) {
+        if (this.saved == false) {
+            event.returnValue = 'Important: Please click on \'Save\' button to leave this page.';
+            return null;
+        }
     }
 
-    handleClick($event) {
+    getName(e) {
+        this.postModel.postName = e.target.value;
+    }
+
+    getInfo(e) {
+        this.postModel.postInfo = e.target.value;
+    }
 
 
+    click(e) {
+        let coverNameField = document.querySelector('.post-name');
+        let inputNameField = document.querySelector('.post-name-edit');
 
+        let coverInfoField = document.querySelector('.post-info');
+        let inputInfoField = document.querySelector('.post-info-edit');
+
+        let onEdit = Observable.of(e.target);
+
+
+        //*========================== edit name start===================================*//
+        if (coverNameField && this.editName == false) {
+            this.editName = true;
+            onEdit.subscribe({
+                next: value => {
+                    if (value == coverNameField || value == coverNameField.childNodes[1]) {
+                        this.editName = true;
+                        let read = setInterval(() => {
+                            if (this.editNameEl) {
+                                if (coverNameField.firstElementChild.textContent != this.postName) {
+                                    this.editNameEl.nativeElement.childNodes[1].value = this.postModel.postName;
+                                }
+
+                                this.editNameEl.nativeElement.childNodes[1].focus();
+                                clearInterval(read);
+                            }
+                        }, 500);
+
+                    } else {
+                        this.editName = false;
+                    }
+                },
+                error: error => {
+                    console.log(error);
+                }
+            });
+
+        }
+
+        if (inputNameField && this.editName == true) {
+            onEdit.subscribe({
+                next: value => {
+                    if (value == inputNameField || value == inputNameField.childNodes[1]) {
+                        this.editName = true;
+
+                    } else {
+                        this.editName = false;
+                    }
+                },
+                error: error => {
+                    console.log(error);
+                }
+            });
+
+        }
+
+        //*============================ edit name stop===================================*//
+
+
+        //*============================ edit info start===================================*//
+
+
+        if (coverInfoField && this.editInfo == false) {
+            this.editInfo = true;
+            onEdit.subscribe({
+                next: value => {
+                    if (value == coverInfoField || value == coverInfoField.childNodes[1]) {
+                        this.editInfo = true;
+                        let read = setInterval(() => {
+                            if (this.editInfoEl) {
+                                if (coverInfoField.firstElementChild.textContent != this.postInfo) {
+                                    this.editInfoEl.nativeElement.childNodes[1].value = this.postModel.postInfo;
+                                }
+
+                                this.editInfoEl.nativeElement.childNodes[1].focus();
+                                clearInterval(read);
+                            }
+                        }, 500);
+
+                    } else {
+                        this.editInfo = false;
+                    }
+                },
+                error: error => {
+                    console.log(error);
+                }
+            });
+            return;
+        }
+
+        if (inputInfoField && this.editInfo == true) {
+            onEdit.subscribe({
+                next: value => {
+                    if (value == inputInfoField || value == inputInfoField.childNodes[1]) {
+                        this.editInfo = true;
+
+                    } else {
+                        this.editInfo = false;
+                    }
+                },
+                error: error => {
+                    console.log(error);
+                }
+            });
+            return;
+        }
+
+        //*============================ edit info stop===================================*//
 
     }
 
@@ -112,11 +235,20 @@ export class NewPostComponent implements OnInit {
         }
     }
 
-    uploadAll() {
+    uploadAll(e) {
+        e.preventDefault();
+        if (this.postModel.postName == this.postName) {
+            alert('please edit post name and info');
+            return;
+        }
+        this.saved = true;
         let formData: FormData = new FormData();
         // let xhr = new XMLHttpRequest();
         let canUpload = false;
-        let data = { obj: 'obj' };
+        let data = {
+            postName: this.postModel.postName,
+            postInfo: this.postModel.postInfo
+        };
 
         for (let i = 0; i < this.items.length; i++) {
             if (this.items[i].hasFile == false) {
@@ -126,22 +258,17 @@ export class NewPostComponent implements OnInit {
             let file: File = fileInput['files']['0'];
             formData.append('uploads[]', file, file.name);
             canUpload = true;
+
         }
 
         if (canUpload) {
-            this.savePageService.postData(formData, data, this.currentUser.id + 'postName').concatAll().subscribe(
+
+            this.savePageService.postData(formData, data, this.currentUser.id + this.postModel.postName).subscribe(
                 () => {
-                    console.log('nothing');
-                },
-                complete => {
-                    console.log('complete');
-                },
-                error => {
-                    console.log(error);
+                    console.log('do it');
                 }
-            )
+            );
 
         }
-
     }
 }
