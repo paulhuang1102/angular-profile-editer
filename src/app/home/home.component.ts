@@ -1,9 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
+import {
+    Component, OnInit, ViewChild, ElementRef, Renderer2, ViewEncapsulation, Inject,
+    PLATFORM_ID
+} from '@angular/core';
 import * as d3 from 'd3';
 import { UserService } from "../services/user.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../services/auth.service";
 import { AlertService } from "../services/alert.service";
+import { isPlatformBrowser } from "@angular/common";
 
 @Component({
     selector: 'app-home',
@@ -17,12 +21,20 @@ export class HomeComponent implements OnInit {
     currentUser;
 
     constructor(private renderer: Renderer2, private userService: UserService, private router: Router,
-                private authService: AuthService, private alertService: AlertService, private route: ActivatedRoute) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                private authService: AuthService, private alertService: AlertService, private route: ActivatedRoute, @Inject(PLATFORM_ID) private platformId: Object) {
+
+
+        if (isPlatformBrowser(this.platformId)) {
+            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        }
+
     }
 
     ngOnInit() {
-        this.createPolygon();
+        if (isPlatformBrowser(this.platformId)) {
+            this.createPolygon();
+        }
+
     }
 
 
@@ -75,7 +87,7 @@ export class HomeComponent implements OnInit {
         this.authService.login(this.model.email, this.model.password)
             .subscribe(
                 data => {
-                    this.router.navigate(['profile/:id'], JSON.parse(localStorage.getItem('currentUser')).id);
+                    this.router.navigate(['profile/:id'], JSON.parse(localStorage.getItem('currentUser'))['id']);
                     this.loading = false;
                 },
                 error => {
@@ -91,7 +103,6 @@ export class HomeComponent implements OnInit {
     }
 
     @ViewChild('control') control: ElementRef;
-
 
 
 }

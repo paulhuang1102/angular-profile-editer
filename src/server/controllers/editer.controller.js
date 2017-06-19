@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
+const Post = require('../models/post.model');
+const User = require('../models/user.model');
+const Q = require('q');
 
 var folderName = '';
 
@@ -24,13 +27,39 @@ router.post('/upload', function (req, res) {
 });
 
 router.post('/save', function (req, res) {
-    var postName = req.body.postName;
-    var postInfo = req.body.postInfo;
-    console.log(postName, postInfo);
+    var deferred = Q.defer();
+    var model = req.body;
+    var post = new Post;
+    post.user_id = model.userId;
+    post.name = model.postName;
+    post.info = model.postInfo;
+    post.images = model.postImages;
+    post.save(function (err, post) {
+        if (err) {
+            deferred.reject("Fail to Add");
+        } else {
+            User.findOne({ _id: model.userId }, function (err, user) {
+                if (err) {
+                    console.log(err);
+                    deferred.reject("Fail to Find User");
+                }
+                user.post.push(post._id);
+                user.save();
+                deferred.resolve("Success Add");
+            })
+        }
+
+        deferred.promise.then(function (doc) {
+            res.status(200);
+        }).catch(function (err) {
+            res.status(400).send(err);
+        })
+
+    })
 });
 
 router.post('/folder', function (req, res) {
-   folderName = req.body.postName
+    folderName = req.body.postName;
     res.sendStatus(200);
 });
 

@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, Inject, PLATFORM_ID } from '@angular/core';
 import * as d3 from 'd3';
+import { isPlatformBrowser } from "@angular/common";
 
 @Component({
     selector: 'app-root',
@@ -10,17 +11,23 @@ export class AppComponent implements OnInit {
     title = 'app';
     @ViewChild('header_bg') headerBg: ElementRef;
 
-    constructor(private ngZone: NgZone) {
-        window.onresize = (e) => {
-            this.ngZone.run(() => {
-                this.headerBg.nativeElement.removeChild(this.headerBg.nativeElement.childNodes[0]);
-                this.createHeaderBg();
-            });
-        };
+    constructor(private ngZone: NgZone, @Inject(PLATFORM_ID) private platformId: Object) {
+        if (isPlatformBrowser(this.platformId)) {
+            window.onresize = (e) => {
+                this.ngZone.run(() => {
+                    this.headerBg.nativeElement.removeChild(this.headerBg.nativeElement.childNodes[0]);
+                    this.createHeaderBg();
+                });
+
+            }
+        }
     }
 
     ngOnInit() {
-        this.createHeaderBg();
+        if (isPlatformBrowser(this.platformId)) {
+            this.createHeaderBg();
+        }
+
     }
 
     createHeaderBg() {

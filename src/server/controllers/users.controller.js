@@ -77,12 +77,13 @@ router.post('/login', function (req, res) {
     })
 });
 
-router.get('/profile/:id', function (req, res) {
+router.post('/profile', function (req, res) {
     var deferred = Q.defer();
-    var userId = req.params.id;
+    var userId = req.body.userId;
     User.findById(userId, function (err, user) {
         if (err) deferred.reject(err.name + ': ' + err.message);
         if (user) {
+
             deferred.resolve({
                 id: user._id,
                 email: user.email,

@@ -10,4 +10,4 @@ import { AppComponent } from "./app.component";
     bootstrap:[AppComponent]
 })
 
-export class AppServerModule{};
+export class AppServerModule{}

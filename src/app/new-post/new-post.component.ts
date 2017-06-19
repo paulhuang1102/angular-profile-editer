@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener, Inject, PLATFORM_ID } from '@angular/core';
 import { SavePageService } from "../services/save-page.service";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
+import { isPlatformBrowser } from "@angular/common";
+import { values } from "d3-collection";
 
 @Component({
     selector: 'app-new-post',
@@ -30,15 +32,17 @@ export class NewPostComponent implements OnInit {
     postInfo = 'Click to Edit Post Info';
 
     private postModel = {
+        userId: JSON.parse(localStorage.getItem('currentUser')).id,
         postName: this.postName,
-        postInfo: this.postInfo
+        postInfo: this.postInfo,
+        postImages: []
     };
 
 
-    constructor(private savePageService: SavePageService, private router: Router) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-
+    constructor(private savePageService: SavePageService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
+        if (isPlatformBrowser(platformId)) {
+            this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        }
     }
 
     ngOnInit() {
@@ -243,32 +247,34 @@ export class NewPostComponent implements OnInit {
         }
         this.saved = true;
         let formData: FormData = new FormData();
-        // let xhr = new XMLHttpRequest();
-        let canUpload = false;
-        let data = {
-            postName: this.postModel.postName,
-            postInfo: this.postModel.postInfo
-        };
 
         for (let i = 0; i < this.items.length; i++) {
             if (this.items[i].hasFile == false) {
+                this.items.splice(this.items.indexOf(this.items[i]), 1);
+            }
+            if (this.items.length < 1) {
+                this.canAdd = true;
                 return;
             }
             let fileInput = document.getElementById('file-to-upload' + i);
             let file: File = fileInput['files']['0'];
             formData.append('uploads[]', file, file.name);
-            canUpload = true;
-
+            this.postModel.postImages.push(fileInput['value'].replace(/^.*[\\\/]/, ''));
+            // canUpload = true;
         }
 
-        if (canUpload) {
+        console.log(this.postModel);
 
-            this.savePageService.postData(formData, data, this.currentUser.id + this.postModel.postName).subscribe(
-                () => {
-                    console.log('do it');
-                }
-            );
 
-        }
+        this.savePageService.postData(formData, this.postModel, this.currentUser.id + this.postModel.postName).subscribe(
+            res => {
+                console.log(res);
+                this.router.navigate(['profile/:id'], this.currentUser.id);
+            },
+            error => {
+                console.log(error);
+            }
+        );
+
     }
 }

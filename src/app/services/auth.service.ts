@@ -10,10 +10,10 @@ export class AuthService {
     }
 
     login(email: string, password: string): Observable<boolean> {
-        return this.http.post(this.serverUrl + '/users/login', { email: email, password: password })
+        return this.http.post(this.serverUrl + '/users/login', { 'email': email, 'password': password })
             .map((response: Response) => {
                 let user = response.json();
-                if (user && user.token) {
+                if (user && user['token']) {
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     return true;
                 } else {

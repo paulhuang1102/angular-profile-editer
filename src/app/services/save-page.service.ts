@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from "@angular/http";
+import { Http, Headers, RequestOptions, Response } from "@angular/http";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 
@@ -21,11 +21,7 @@ export class SavePageService {
         }
     }
 
-    uploadAll(data): Observable<any> {
-        return this.http.post(this.serverUrl + '/editor/save', data, this.jwt())
-    }
-
-    uploadImage(formData, data): Observable<any> {
+    uploadImage(formData) {
         let xhr = new XMLHttpRequest();
         let progress = 0;
         xhr.upload.onprogress = (event) => {
@@ -34,20 +30,15 @@ export class SavePageService {
         xhr.open('POST', this.serverUrl + '/editor/upload', true);
         xhr.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token);
         xhr.send(formData);
-
-        return this.uploadAll(data);
+        return false;
     }
 
     postData(formData, data, folderName): Observable<any> {
-        this.http.post(this.serverUrl + '/editor/folder', { postName: folderName }, this.jwt()).subscribe(
-            res=> {
-                return this.uploadImage(formData, data);
-            },
-            error => {
-                return;
-            }
-        );
-        return this.uploadImage(formData, data);
+
+        return this.http.post(this.serverUrl + '/editor/folder', { postName: folderName }, this.jwt()).map((response: Response) => {
+            this.uploadImage(formData);
+            return this.http.post(this.serverUrl + '/editor/save', data, this.jwt());
+        }).concatAll();
 
     }
 

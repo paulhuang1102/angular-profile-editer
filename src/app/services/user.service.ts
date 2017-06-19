@@ -13,14 +13,14 @@ export class UserService {
 
     private jwt() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentUser && currentUser.token) {
-            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
+        if (currentUser) {
+            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser['token'] });
             return new RequestOptions({ headers: headers })
         }
     }
 
     getUser(userId: string) {
-        return this.http.get(this.serverUrl + '/users/profile/' + userId, this.jwt()).map((response: Response) => response.json());
+        return this.http.post(this.serverUrl + '/users/profile', { 'userId': userId }, this.jwt()).map((response: Response) => response.json());
     }
 
     createUser(user: User) {
