@@ -24,9 +24,10 @@ app.use(function (req, res, next) { //allow cross origin requests
 });
 
 
-app.use(expressJwt({ secret: config.secret }).unless({ path: ['/users/login', '/users/signup'] }));
+app.use(expressJwt({ secret: config.secret }).unless({ path: ['/users/login', '/users/signup', '/post', /^\/uploads\/.*/] }));
 app.use('/users', require('./controllers/users.controller'));
 app.use('/editor', require('./controllers/editer.controller'));
+app.use('/post', require('./controllers/post.controller'));
 
 app.listen(app.get('port'), function () {
     console.log('Angular 4 Full Stack listening on port ' + app.get('port'));

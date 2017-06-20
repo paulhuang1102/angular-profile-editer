@@ -1,3 +1,7 @@
+.post-data {
+    margin-bottom: 30px;
+}
+
 .post-name, .post-name-edit {
     height: 50px;
     border: solid #DCDCDC 1px;
@@ -11,13 +15,12 @@
     color: black;
 }
 
-
 .post-name p {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    color:#888888;
+    color: #888888;
     transition: .3s;
 }
 
@@ -33,7 +36,6 @@
     padding-left: 8px;
 }
 
-
 .post-info, .post-info-edit {
     height: 200px;
     border: solid #DCDCDC 1px;
@@ -47,7 +49,7 @@
 }
 
 .post-info textarea {
-    color:#888888;
+    color: #888888;
     transition: .3s;
 }
 
@@ -56,7 +58,6 @@
     transition: .3s;
 }
 
-
 .post-info textarea, .post-info-edit textarea {
     width: 100%;
     height: 100%;
@@ -64,18 +65,56 @@
     padding: 10px;
 }
 
+.upload-field {
+    min-height: 200px;
+    border: #DCDCDC solid 1px;
+    margin-top: 20px;
+}
 
+.new-post-submit {
+    float: right;
+    background-color: #888888;
+    color: #DDDDDD;
+    margin-top: 20px;
+    padding: 10px;
+    transition: .3s;
+}
+
+.new-post-submit:hover {
+    background-color: #00DDDD;
+    color: #FFFFFF;
+    transition: .4s;
+}
 
 .img-upload {
     position: relative;
     width: 200px;
     height: 200px;
-    background-color: skyBlue;
-    margin-right: 20px;
-    margin-top: 20px;
+    background-color: #DCDCDC;
+    background-image: url(../../assets/images/add.png);
+    background-position: center center;
+    margin: 10px;
     float: left;
+    background-blend-mode: soft-light;
+    transition: .5s;
 }
 
+.img-upload:hover {
+    background-blend-mode: overlay;
+    border: dashed #888888 5px;
+    transition: .5s;
+}
+
+.no-hover:hover {
+    background-blend-mode: soft-light;
+    border: none;
+}
+
+.trig {
+    background-blend-mode: overlay;
+    border: dashed #888888 5px;
+    transition: .5s;
+}
 
 .img-upload [type=file] {
     cursor: pointer;
@@ -89,15 +128,27 @@
     height: 200px;
 }
 
-.close-icon {
-    width: 30px;
-    height: 30px;
+.img-upload p {
+    width: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 14px;
+    color: #FFFFFF;
+    text-shadow: -1px 0 #888888, 0 1px #888888, 1px 0 #888888, 0 -1px #888888;
+}
+
+.img-upload .fa.fa-window-close-o {
+    font-size: 30px;
     position: absolute;
     right: 0;
     top: 0;
     z-index: 50;
+    color: #888888;
 }
 
-.blue {
-    background-color: blue;
+.img-upload img {
+    display: none;
 }
+

@@ -6,6 +6,7 @@ import { RedirectComponent } from "./redirect/redirect.component";
 import { AuthGuard } from "./guard/auth.guard";
 import { ProfileComponent } from "./profile/profile.component";
 import { NewPostComponent } from "./new-post/new-post.component";
+import { PostComponent } from "./post/post.component";
 const appRoutes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
@@ -13,8 +14,9 @@ const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'redirect', component: RedirectComponent },
     { path: 'profile/:id', component: ProfileComponent, canActivate: [AuthGuard] },
-    { path: 'new_post', component: NewPostComponent },
-    { path: '**', redirectTo: '/home' }
+    { path: 'new_post', component: NewPostComponent, canActivate: [AuthGuard] },
+    { path: 'post/:id', component: PostComponent },
+    { path: '**', redirectTo: 'home' }
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);

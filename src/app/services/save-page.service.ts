@@ -5,14 +5,10 @@ import { Router } from "@angular/router";
 
 @Injectable()
 export class SavePageService {
-    private headers = new Headers({ 'Content-Type': 'application/json', 'charset': 'UTF-8' });
-    private options = new RequestOptions({ headers: this.headers });
     private serverUrl = 'http://localhost:3000';
 
     constructor(private http: Http, private router: Router) {
     }
-
-
     private jwt() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {

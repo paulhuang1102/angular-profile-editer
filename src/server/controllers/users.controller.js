@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const db = mongoose.connection;
 const config = require('../config.json');
 const User = require('../models/user.model');
+const Post = require('../models/post.model');
 const Q = require('q');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
@@ -83,21 +84,28 @@ router.post('/profile', function (req, res) {
     User.findById(userId, function (err, user) {
         if (err) deferred.reject(err.name + ': ' + err.message);
         if (user) {
-
-            deferred.resolve({
-                id: user._id,
-                email: user.email,
-                name: user.name,
-                post: user.post
+            Post.find({ user_id: userId }, function (err, posts) {
+                if (err) {
+                    deferred.reject(err.name + ': ' + err.message);
+                }
+                deferred.resolve([
+                    {
+                        id: user._id,
+                        email: user.email,
+                        name: user.name,
+                        post: user.post
+                    },
+                    posts
+                ]);
             });
         } else {
-            deferred.resolve();
+            deferred.reject('No User');
         }
     });
 
-    deferred.promise.then(function (user) {
-        if (user) {
-            res.json(user);
+    deferred.promise.then(function (data) {
+        if (data[0]) {
+            res.json({ 'user': data[0], 'posts': data[1] });
         } else {
             res.sendStatus(404);
         }

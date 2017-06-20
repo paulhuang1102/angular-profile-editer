@@ -1,15 +1,26 @@
 <div class="container">
-  <div class="row">
-    <div class="banner" style="height: 400px">
-      this is banner
+    <div class="row">
+        <div class="banner" style="height: 400px">
+            this is banner
+        </div>
     </div>
-  </div>
-  <div class="row">
-    <button class="add-post-btn" (click)="addPost()">Add post</button>
-    <div class="post-list">
-      <ul>
-        <li *ngFor="let post of posts">{{ post.name }}</li>
-      </ul>
+    <div class="row">
+        <h2 class="user-name">{{ user.name }}</h2>
+        <button class="add-post-btn" (click)="addPost()">Add post</button>
+        <div class="post-list">
+            <ul>
+                <li *ngFor="let post of posts" [routerLink]="['/post', post._id]" class="clearfix">
+                    <div class="post-name"><p>{{ post.name }}</p></div>
+                    <div class="post-image">
+                        <i class="fa fa-picture-o" aria-hidden="true" (mouseenter)="showImage($event)" (mouseleave)="hideImage($event)"></i>
+                        <div class="img-zone">
+                            <img *ngFor="let image of post.images; let i = index"
+                                 src="../../assets/uploads/{{ user.id }}{{ post.name }}/{{ post.images[i] }}">
+                        </div>
+                    </div>
+                    <div class="post-upload-date"><p>{{ post. add_date | date:'yyyy/MM/dd' }}</p></div>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </div>

@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row">
+    <div class="row post-data">
         <div class="col-md-4 clearfix">
             <div class="post-name" *ngIf="!editName">
                 <p>{{postModel.postName}}</p>
@@ -18,22 +18,22 @@
         </div>
 
     </div>
-    <div class="row">
+    <div class="row post-images">
         <div class="col-md-12">
             <button class="btn btn-primary add-img" (click)="addImage()" [disabled]="!canAdd">新增圖片欄位(最多10格)</button>
             <div class="clearfix upload-field" #uploadField>
                 <div class="img-upload" *ngFor="let item of items; let i = index" [ngStyle]="{'width': item.width}"
-                     [ngClass]="{'blue': item.drop}" (dragover)="item.drop = true" (dragenter)="item.drop = true"
-                     (dragleave)="item.drop = false">
-                    <img src="assets/images/close.png" alt="" class="close-icon" (click)="closeItem(item)">
+                     [ngClass]="{'trig': item.drop}" (dragenter)="item.drop = true"
+                      id="img-upload{{i}}">
+                    <i class="fa fa-window-close-o" aria-hidden="true" (click)="closeItem(item)"></i>
                     <p [ngStyle]="{'display': item.font}">點擊或拖曳選取</p>
                     <input class="file-to-upload" type="file" name="fileToUpload"
                            (change)="previewFile($event, item, i)"
                            id="file-to-upload{{i}}" accept="image/*">
-                    <img src="{{item.src}}" height="200" alt="Image preview..." id="preview{{i}}">
+                    <img src="{{item.src}}" height="200" id="preview{{i}}">
                 </div>
-                <button type="submit" (click)="uploadAll($event)">Save This Post</button>
             </div>
+            <button class="new-post-submit" type="submit" (click)="uploadAll($event)">Save This Post</button>
         </div>
     </div>
 </div>

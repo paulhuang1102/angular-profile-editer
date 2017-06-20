@@ -17,6 +17,8 @@ import { RedirectComponent } from './redirect/redirect.component';
 import { AuthGuard } from "./guard/auth.guard";
 import { ProfileComponent } from './profile/profile.component';
 import { NewPostComponent } from './new-post/new-post.component';
+import { PostComponent } from './post/post.component';
+import { PostService } from "./services/post.service";
 
 @NgModule({
     declarations: [
@@ -27,7 +29,8 @@ import { NewPostComponent } from './new-post/new-post.component';
         RegisterComponent,
         RedirectComponent,
         ProfileComponent,
-        NewPostComponent
+        NewPostComponent,
+        PostComponent
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'editor' }),
@@ -35,7 +38,7 @@ import { NewPostComponent } from './new-post/new-post.component';
         HttpModule,
         FormsModule
     ],
-    providers: [SavePageService, AuthService, UserService, AlertService, AuthGuard],
+    providers: [SavePageService, AuthService, UserService, AlertService, AuthGuard, PostService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

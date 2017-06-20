@@ -2,16 +2,70 @@
     display: none;
 }
 
+.user-name {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
 .add-post-btn {
     color: #ffffff;
     background-color: #888888;
     padding: 5px 10px;
-}
-
-.post-list {
-    background-color: #DCDCDC;
+    margin-bottom: 10px;
 }
 
 .post-list ul li {
-
+    background-color: #DCDCDC;
+    height: 50px;
+    border: #ffffff  outset 1px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: .7s;
 }
+
+.post-list ul li:hover {
+    background-color: #888888;
+    transition: .7s;
+}
+
+.post-list ul li > div p {
+    text-align: center;
+    padding-top: 18px;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 1px #5e5d5d;
+}
+
+.post-name {
+     width: 20%;
+     float: left;
+ }
+
+
+.post-image {
+    width: 50%;
+    float: left;
+}
+
+.post-image i {
+    font-size: 40px;
+    padding-top: 5px;
+    float: left;
+    margin-right: 5px;
+}
+
+.post-image img {
+    height: 48px;
+    border: black solid 2px;
+    margin-right: 5px;
+    float: left;
+}
+
+.img-zone {
+    opacity: 0;
+    transform: translateX(-5px);
+}
+.post-upload-date {
+    width: 30%;
+    float: left;
+}
+

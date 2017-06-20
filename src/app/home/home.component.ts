@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
 
         let svg = d3.select(element)
             .append('svg')
-            .attr('width', 800)
+            .attr('width', '100%')
             .attr('height', 800);
 
         let polygon_line = svg.append('polygon')

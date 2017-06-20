@@ -5,6 +5,10 @@ const fs = require('fs');
 const Post = require('../models/post.model');
 const User = require('../models/user.model');
 const Q = require('q');
+const mongoose = require('mongoose');
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
 
 var folderName = '';
 
@@ -36,12 +40,12 @@ router.post('/save', function (req, res) {
     post.images = model.postImages;
     post.save(function (err, post) {
         if (err) {
-            deferred.reject("Fail to Add");
+            deferred.reject(err.name + ': ' + err.message);
         } else {
             User.findOne({ _id: model.userId }, function (err, user) {
                 if (err) {
                     console.log(err);
-                    deferred.reject("Fail to Find User");
+                    deferred.reject(err.name + ': ' + err.message);
                 }
                 user.post.push(post._id);
                 user.save();
@@ -64,9 +68,9 @@ router.post('/folder', function (req, res) {
 });
 
 
-var storage = multer.diskStorage({ //multers disk storage settings
+var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        var dir = './uploads/' + folderName;
+        var dir = '../assets/uploads/' + folderName;
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
         }

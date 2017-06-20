@@ -205,6 +205,9 @@ export class NewPostComponent implements OnInit {
 
         if (file) {
             reader.readAsDataURL(file);
+            preview.style.display = 'block';
+            item.drop = false;
+            document.querySelector('#img-upload' + i).classList.add('no-hover');
             preview.onload = () => {
                 item.width = preview['width'] + 'px';
             };
@@ -262,9 +265,6 @@ export class NewPostComponent implements OnInit {
             this.postModel.postImages.push(fileInput['value'].replace(/^.*[\\\/]/, ''));
             // canUpload = true;
         }
-
-        console.log(this.postModel);
-
 
         this.savePageService.postData(formData, this.postModel, this.currentUser.id + this.postModel.postName).subscribe(
             res => {
