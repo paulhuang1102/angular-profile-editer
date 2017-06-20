@@ -45,3 +45,4 @@ Thumbs.db
 # Upload Files
 /src/server/uploads
 /uploads
+/src/assets/uploads/
