@@ -5,20 +5,21 @@
         </div>
     </div>
     <div class="row">
-        <h2 class="user-name">{{ user.name }}</h2>
+        <h2 class="user-name">{{ user?.name }}</h2>
         <button class="add-post-btn" (click)="addPost()">Add post</button>
         <div class="post-list">
             <ul>
-                <li *ngFor="let post of posts" [routerLink]="['/post', post._id]" class="clearfix">
+                <li *ngFor="let post of posts" [routerLink]="['/post', post._id]" class="clearfix slide">
                     <div class="post-name"><p>{{ post.name }}</p></div>
                     <div class="post-image">
                         <i class="fa fa-picture-o" aria-hidden="true" (mouseenter)="showImage($event)" (mouseleave)="hideImage($event)"></i>
                         <div class="img-zone">
                             <img *ngFor="let image of post.images; let i = index"
-                                 src="../../assets/uploads/{{ user.id }}{{ post.name }}/{{ post.images[i] }}">
+                                 src="assets/uploads/{{ user.id }}_{{ post._id }}/{{ post.images[i] }}">
                         </div>
                     </div>
                     <div class="post-upload-date"><p>{{ post. add_date | date:'yyyy/MM/dd' }}</p></div>
+                    <button class="edit-post pulse" [routerLink]="['/edit_post', post._id]">Edit</button>
                 </li>
             </ul>
         </div>

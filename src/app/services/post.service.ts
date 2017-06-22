@@ -10,7 +10,7 @@ export class PostService {
   constructor(private http: Http) { }
 
   getPost(postId: string):Observable<any> {
-    return this.http.post(this.serverUrl + '/post', { 'postId': postId}, this.options).map((response: Response) => response.json());
+    return this.http.post(this.serverUrl + '/post', { 'postId': postId}, this.options);
   }
 
 }

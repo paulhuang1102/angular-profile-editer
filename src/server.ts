@@ -42,7 +42,6 @@ app.use(function (req, res, next) { //allow cross origin requests
 
 
 
-
 app.set('view engine', 'html');
 app.set('views', 'src');
 
@@ -51,9 +50,12 @@ app.get('*.*', express.static(join(__dirname, '..', 'dist')));
 app.get('*', (req, res) => {
     res.render('index', { req });
 });
-app.use(expressJwt({ secret: "My Super Secret" }).unless({ path: ['/users/login', '/users/signup'] }));
+
+app.use(expressJwt({ secret: "My Super Secret" }).unless({ path: ['/users/login', '/users/signup', '/post'] }));
 app.use('/users', require('./server/controllers/users.controller'));
-app.use('/editor', require('./server/controllers/editer.controller'));
+app.use('/editor', require('./server/controllers/editor.controller'));
+app.use('/post', require('./server/controllers/post.controller'));
+
 app.listen(port, () => {
     console.log('Angular 4 Full Stack listening on port ' + port);
 });

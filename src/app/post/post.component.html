@@ -2,20 +2,20 @@
     <div class="row post-data">
         <div class="col-md-4 clearfix">
             <div class="post-name">
-                <p>{{ postModel.name }}</p>
+                <p>{{ postModel?.name }}</p>
             </div>
         </div>
         <div class="col-md-8">
             <div class="post-info">
-                {{ postModel.info }}
+               <p>{{ postModel?.info }}</p>
             </div>
         </div>
 
     </div>
     <div class="row post-images">
         <div class="col-md-12">
-            <img src="../../assets/uploads/{{ postModel.user_id }}{{ postModel.name }}/{{ postModel.images[i] }}"
-                 *ngFor="let image of postModel.images; let i = index">
+            <img src="assets/uploads/{{ postModel.user_id}}_{{ postModel._id}}/{{ image }}"
+                 *ngFor="let image of postModel?.images; let i = index">
         </div>
     </div>
 </div>

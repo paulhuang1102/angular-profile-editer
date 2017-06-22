@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from "@angular/http";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class SavePageService {
@@ -9,6 +10,7 @@ export class SavePageService {
 
     constructor(private http: Http, private router: Router) {
     }
+
     private jwt() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser && currentUser.token) {
@@ -17,25 +19,44 @@ export class SavePageService {
         }
     }
 
-    uploadImage(formData) {
+    uploadImage(formData, data, id) {
         let xhr = new XMLHttpRequest();
-        let progress = 0;
-        xhr.upload.onprogress = (event) => {
-            progress = Math.round(event.loaded / event.total * 100);
-        };
-        xhr.open('POST', this.serverUrl + '/editor/upload', true);
+        xhr.open('POST', this.serverUrl + '/editor/upload/' + data.userId + '_' + id, true);
         xhr.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token);
         xhr.send(formData);
-        return false;
+        return true;
     }
 
-    postData(formData, data, folderName): Observable<any> {
-
-        return this.http.post(this.serverUrl + '/editor/folder', { postName: folderName }, this.jwt()).map((response: Response) => {
-            this.uploadImage(formData);
-            return this.http.post(this.serverUrl + '/editor/save', data, this.jwt());
-        }).concatAll();
-
+    saveData(formData, data): Observable<any> {
+        return this.http.post(this.serverUrl + '/editor/save', data, this.jwt()).map((response: Response) => {
+            this.uploadImage(formData, data, response.json());
+        });
     }
+
+    getPost(postId): Observable<any> {
+        return this.http.post(this.serverUrl + '/editor/' + postId, {}, this.jwt()).map((response: Response) => response.json());
+    }
+
+    putPost(formData, postId, newPost, removeItems): Observable<any> {
+        return this.http.put(this.serverUrl + '/editor/' + postId, {
+            newPost: newPost,
+            removeItems: removeItems
+        }, this.jwt())
+            .map((response: Response) => {
+                return this.http.post(this.serverUrl + '/editor/delete/' + postId, {
+                    removeItems: removeItems,
+                    folderName: newPost.userId + '_' + postId
+                }, this.jwt())
+                    .map((response: Response) => {
+                        console.log('upload start');
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('POST', this.serverUrl + '/editor/upload/' + newPost.userId + '_' + postId, true);
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')).token);
+                        xhr.send(formData);
+                        return true;
+                    })
+            });
+    }
+
 
 }

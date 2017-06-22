@@ -24,9 +24,9 @@ app.use(function (req, res, next) { //allow cross origin requests
 });
 
 
-app.use(expressJwt({ secret: config.secret }).unless({ path: ['/users/login', '/users/signup', '/post', /^\/uploads\/.*/] }));
+app.use(expressJwt({ secret: config.secret }).unless({ path: ['/users/login', '/users/signup', '/post'] }));
 app.use('/users', require('./controllers/users.controller'));
-app.use('/editor', require('./controllers/editer.controller'));
+app.use('/editor', require('./controllers/editor.controller'));
 app.use('/post', require('./controllers/post.controller'));
 
 app.listen(app.get('port'), function () {

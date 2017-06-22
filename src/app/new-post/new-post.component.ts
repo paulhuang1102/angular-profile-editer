@@ -3,7 +3,6 @@ import { SavePageService } from "../services/save-page.service";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { isPlatformBrowser } from "@angular/common";
-import { values } from "d3-collection";
 
 @Component({
     selector: 'app-new-post',
@@ -69,7 +68,6 @@ export class NewPostComponent implements OnInit {
     click(e) {
         let coverNameField = document.querySelector('.post-name');
         let inputNameField = document.querySelector('.post-name-edit');
-
         let coverInfoField = document.querySelector('.post-info');
         let inputInfoField = document.querySelector('.post-info-edit');
 
@@ -92,7 +90,7 @@ export class NewPostComponent implements OnInit {
                                 this.editNameEl.nativeElement.childNodes[1].focus();
                                 clearInterval(read);
                             }
-                        }, 500);
+                        }, 200);
 
                     } else {
                         this.editName = false;
@@ -143,7 +141,7 @@ export class NewPostComponent implements OnInit {
                                 this.editInfoEl.nativeElement.childNodes[1].focus();
                                 clearInterval(read);
                             }
-                        }, 500);
+                        }, 200);
 
                     } else {
                         this.editInfo = false;
@@ -179,7 +177,7 @@ export class NewPostComponent implements OnInit {
 
 
     addImage() {
-        if (this.items.length > 10) {
+        if (this.items.length >= 10) {
             alert('最多只能上傳10張照片!');
             return;
         }
@@ -253,7 +251,7 @@ export class NewPostComponent implements OnInit {
 
         for (let i = 0; i < this.items.length; i++) {
             if (this.items[i].hasFile == false) {
-                this.items.splice(this.items.indexOf(this.items[i]), 1);
+                this.items.splice(i, 1);
             }
             if (this.items.length < 1) {
                 this.canAdd = true;
@@ -261,18 +259,21 @@ export class NewPostComponent implements OnInit {
             }
             let fileInput = document.getElementById('file-to-upload' + i);
             let file: File = fileInput['files']['0'];
-            formData.append('uploads[]', file, file.name);
-            this.postModel.postImages.push(fileInput['value'].replace(/^.*[\\\/]/, ''));
+            if (file) {
+                formData.append('uploads[]', file, file.name);
+            }
+            if (fileInput['value'] != '') {
+                this.postModel.postImages.push(fileInput['value'].replace(/^.*[\\\/]/, ''));
+            }
+
             // canUpload = true;
         }
-
-        this.savePageService.postData(formData, this.postModel, this.currentUser.id + this.postModel.postName).subscribe(
+        this.savePageService.saveData(formData, this.postModel).subscribe(
             res => {
-                console.log(res);
-                this.router.navigate(['profile/:id'], this.currentUser.id);
-            },
-            error => {
-                console.log(error);
+                if (res == true) {
+                    this.uploading = false;
+                    this.router.navigate(['profile/:id'], this.currentUser.id);
+                }
             }
         );
 

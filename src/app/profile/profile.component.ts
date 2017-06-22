@@ -3,6 +3,8 @@ import { UserService } from "../services/user.service";
 import { Router } from "@angular/router";
 import { Post } from "../models/post.model";
 import { isPlatformBrowser } from "@angular/common";
+import { SavePageService } from "../services/save-page.service";
+import { User } from "../models/user.model";
 
 @Component({
     selector: 'app-profile',
@@ -11,10 +13,10 @@ import { isPlatformBrowser } from "@angular/common";
 })
 export class ProfileComponent implements OnInit {
 
-    user = {};
+    user: User;
     posts = [];
 
-    constructor(private userService: UserService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
+    constructor(private userService: UserService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private savePageService: SavePageService) {
     }
 
     ngOnInit() {
@@ -43,25 +45,22 @@ export class ProfileComponent implements OnInit {
     }
 
     addPost() {
-        if (this.posts.length > 10) {
+        if (this.posts.length >= 10) {
             alert('too many posts!');
             return;
         }
 
         this.router.navigate(['new_post']);
-
     }
 
     showImage(e) {
-
         e.target.nextSibling.nextSibling.style.opacity = 1;
-        e.target.nextSibling.nextSibling.style.transform = 'translateX(0)';
+
 
     }
 
     hideImage(e) {
         e.target.nextSibling.nextSibling.style.opacity = 0;
-        e.target.nextSibling.nextSibling.style.transform = 'translateX(-50px)';
     }
 
 }

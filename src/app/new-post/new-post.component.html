@@ -2,7 +2,7 @@
     <div class="row post-data">
         <div class="col-md-4 clearfix">
             <div class="post-name" *ngIf="!editName">
-                <p>{{postModel.postName}}</p>
+                <p>{{ postModel.postName }}</p>
             </div>
             <div class="post-name-edit" *ngIf="editName" #editName>
                 <input type="text" (change)="getName($event)">
@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-8">
             <div class="post-info" *ngIf="!editInfo">
-                <textarea>{{postModel.postInfo}}</textarea>
+                <textarea>{{ postModel.postInfo }}</textarea>
             </div>
             <div class="post-info-edit" *ngIf="editInfo" #editInfo>
                 <textarea (change)="getInfo($event)"></textarea>
@@ -24,7 +24,7 @@
             <div class="clearfix upload-field" #uploadField>
                 <div class="img-upload" *ngFor="let item of items; let i = index" [ngStyle]="{'width': item.width}"
                      [ngClass]="{'trig': item.drop}" (dragenter)="item.drop = true"
-                      id="img-upload{{i}}">
+                     id="img-upload{{i}}">
                     <i class="fa fa-window-close-o" aria-hidden="true" (click)="closeItem(item)"></i>
                     <p [ngStyle]="{'display': item.font}">點擊或拖曳選取</p>
                     <input class="file-to-upload" type="file" name="fileToUpload"

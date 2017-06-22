@@ -1,0 +1,140 @@
+.post-data {
+    margin-bottom: 30px;
+}
+
+.post-name-edit {
+    height: 50px;
+    border: solid #DCDCDC 1px;
+    transition: .5s;
+
+}
+
+
+.post-name-edit input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding-left: 8px;
+}
+
+.post-info-edit {
+    height: 200px;
+    border: solid #DCDCDC 1px;
+    text-align: center;
+    transition: .5s;
+}
+
+.post-info-edit textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 10px;
+}
+
+.upload-field {
+    min-height: 200px;
+    border: #DCDCDC solid 1px;
+    margin-top: 20px;
+}
+
+.origin-zone {
+    float: left;
+    margin: 10px;
+    position: relative;
+    height: 200px;
+}
+
+.origin-zone i {
+    font-size: 30px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 50;
+    color: #888888;
+}
+
+.origin-image {
+    height: 200px;
+}
+
+.new-post-submit {
+    float: right;
+    background-color: #888888;
+    color: #DDDDDD;
+    margin-top: 20px;
+    padding: 10px;
+    transition: .3s;
+}
+
+.new-post-submit:hover {
+    background-color: #00DDDD;
+    color: #FFFFFF;
+    transition: .4s;
+}
+
+.img-upload {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: #DCDCDC;
+    background-image: url(../../assets/images/add.png);
+    background-position: center center;
+    margin: 10px;
+    float: left;
+    background-blend-mode: soft-light;
+    transition: .5s;
+}
+
+.img-upload:hover {
+    background-blend-mode: overlay;
+    border: dashed #888888 5px;
+    transition: .5s;
+}
+
+.no-hover:hover {
+    background-blend-mode: soft-light;
+    border: none;
+}
+
+.trig {
+    background-blend-mode: overlay;
+    border: dashed #888888 5px;
+    transition: .5s;
+}
+
+.img-upload [type=file] {
+    cursor: pointer;
+    display: block;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    width: 100%;
+    height: 200px;
+}
+
+.img-upload p {
+    width: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 14px;
+    color: #FFFFFF;
+    text-shadow: -1px 0 #888888, 0 1px #888888, 1px 0 #888888, 0 -1px #888888;
+}
+
+.img-upload .fa.fa-window-close-o {
+    font-size: 30px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 50;
+    color: #888888;
+}
+
+.img-upload img {
+    display: none;
+}
+

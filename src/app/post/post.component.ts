@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from "../services/post.service";
 import { ActivatedRoute } from "@angular/router";
+import { Post } from "../models/post.model";
 
 @Component({
   selector: 'app-post',
@@ -8,7 +9,7 @@ import { ActivatedRoute } from "@angular/router";
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
-  private postModel = {};
+  postModel : Post;
 
   constructor(private postService: PostService, private route: ActivatedRoute) { }
 
@@ -19,8 +20,8 @@ export class PostComponent implements OnInit {
   getPost() {
     let postId = this.route.snapshot.params['id'];
     this.postService.getPost(postId).subscribe(
-        data => {
-          this.postModel = data;
+        res => {
+          this.postModel = res.json();
         },
         error => {
           console.log(error);
